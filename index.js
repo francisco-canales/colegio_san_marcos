@@ -130,3 +130,20 @@ app.put('/alumnos/:id', (req, res) => {
   });
 });
 
+
+// DELETE /alumnos/:id
+// Elimina un alumno por su id
+app.delete('/alumnos/:id', (req, res) => {
+  const alumnoIndex = alumnos.findIndex((a) => a.id === Number(req.params.id));
+
+  if (alumnoIndex === -1) {
+    return res.status(404).json({
+      message: 'Alumno no encontrado'
+    })
+  }
+
+  alumnos.splice(alumnoIndex, 1)
+
+  res.status(204).send();
+})
+
