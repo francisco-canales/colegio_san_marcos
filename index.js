@@ -85,3 +85,20 @@ app.post('/alumnos', (req, res) => {
   });
 });
 
+// PATCH /alumnos/:id
+// Actualiza solo los campos enviados en el body, los demas se mantienen igual
+app.patch('/alumnos/:id', (req, res) => {
+  const alumno = alumnos.find((a) => a.id === Number(req.params.id));
+
+  const { nombre, apellido, grado, seccion } = req.body;
+
+  if (nombre) alumno.nombre = nombre;
+  if (apellido) alumno.apellido = apellido;
+  if (grado) alumno.grado = grado;
+  if (seccion) alumno.seccion = seccion;
+
+  res.json({
+    message: 'Alumno actualizado exitosamente',
+    alumno,
+  });
+});
