@@ -102,3 +102,31 @@ app.patch('/alumnos/:id', (req, res) => {
     alumno,
   });
 });
+
+//Put /alumnos/:id
+app.put('/alumnos/:id', (req, res) => {
+  // error: 'El body no puede estar vacío',
+  // });
+  // }
+
+  const alumno = alumnos.find((a) => a.id === Number(req.params.id));
+
+  if (!alumno) {
+    return res.status(404).json({
+      error: 'Alumno no encontrado',
+    });
+  }
+
+  const { nombre, apellido, grado, seccion } = req.body;
+
+  alumno.nombre = nombre;
+  alumno.apellido = apellido;
+  alumno.grado = grado;
+  alumno.seccion = seccion;
+
+  res.json({
+    message: 'Alumno actualizado exitosamente',
+    alumno,
+  });
+});
+
