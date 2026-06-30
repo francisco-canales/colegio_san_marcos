@@ -147,3 +147,11 @@ app.delete('/alumnos/:id', (req, res) => {
   res.status(204).send();
 })
 
+
+// Captura cualquier solicitud que no coincida con las rutas definidas
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Ruta no encontrada',
+  });
+});
+
