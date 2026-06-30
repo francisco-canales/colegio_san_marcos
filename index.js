@@ -48,3 +48,40 @@ app.get('/alumnos', (req, res) => {
 
   res.json(resultado);
 });
+
+
+// POST /alumnos
+
+// Registrar un nuevo alumno
+app.post('/alumnos', (req, res) => {
+  if (
+    req.body === undefined ||
+    req.body.nombre === undefined ||
+    req.body.apellido === undefined ||
+    req.body.grado === undefined ||
+    req.body.seccion === undefined
+  ) {
+    return res.status(400).json({
+      error:
+        'Todos los campos son requeridos: nombre, apellido, grado, seccion',
+    });
+  }
+
+  const { nombre, apellido, grado, seccion } = req.body;
+
+  const nuevoAlumno = {
+    id: idActual++,
+    nombre,
+    apellido,
+    grado,
+    seccion,
+  };
+
+  alumnos.push(nuevoAlumno);
+
+  res.status(201).json({
+    message: 'Alumno registrado existosamente',
+    alumno: nuevoAlumno,
+  });
+});
+
