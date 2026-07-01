@@ -35,4 +35,40 @@ export const create = ({ nombre, apellido, grado, seccion }) => {
 
   return AlumnoRepository.save({ nombre, apellido, grado, seccion });
 };
- export const update = (id, campos) => {};
+
+export const update = (id, campos) => {
+  const existe = AlumnoRepository.findById(id);
+
+  if (!existe) {
+    throw new AppError('Alumno no encontrado', 404);
+  }
+
+  if (!campos) {
+    throw new AppError('No se proporcionaron campos para actualizar', 400);
+  }
+
+  const camposPermitidos = ['nombre', 'apellido', 'grado', 'seccion'];
+
+  const camposEnviados = Object.keys(campos).filter((campo) =>
+    camposPermitidos.includes(campo),
+  );
+
+    if (camposEnviados.length === 0) {
+    throw new AppError(
+      'Debes enviar al menos un campo valido: nombre, apellido, grado o seccion',
+      400,
+    );
+  }
+
+  return AlumnoRepository.updateById(id, campos);
+};
+
+export const remove = (id) => {
+  const existe = AlumnoRepository.findById(id);
+
+  if (!existe) {
+    throw new AppError('Alumno no encontrado', 404);
+  }
+
+  AlumnoRepository.deleteById(id);
+};

@@ -13,6 +13,6 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^17.4.2",
-    "xpress": "^2.4.6"
+    "express": "^4.21.2"
   }
 }
