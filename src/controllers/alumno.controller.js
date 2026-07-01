@@ -47,6 +47,8 @@ export const update = (req, res) => {
       Number(req.params.id),
       req.body,
     );
+
+    res.json(alumnoActualizado);
   } catch (error) {
     res.status(error.statusCode ?? 500).json({ error: error.message });
   }

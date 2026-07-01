@@ -1,10 +1,11 @@
 import { Router } from 'express';
+import { apiKey } from '../middlewares/apiKey.js';
 import * as AlumnoController from '../controllers/alumno.controller.js';
 
 const router = Router();
 
 // getAll - Devuelve todos los alumnos, con opción de filtrar por grado
-router.get('/', AlumnoController.getAll);
+router.get('/', apiKey, AlumnoController.getAll);
 
 // getById - Devuelve un alumno por su ID
 router.get('/:id', AlumnoController.getById);
