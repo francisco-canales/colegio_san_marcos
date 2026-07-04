@@ -1,13 +1,11 @@
 import { AppError } from '../errors/appError.js';
 import * as AlumnoRepository from '../repositories/alumno.repository.js';
 
-// getAll - Devuelve todos los alumnos, con opción de filtrar por grado
-export const getAll = ({ grado } = {}) => {
+export const getAll = async ({ grado } = {}) => {
   return AlumnoRepository.findAll({ grado });
 };
 
-// getById - Devuelve un alumno por su ID
-export const getById = (id) => {
+export const getById = async (id) => {
   const alumno = AlumnoRepository.findById(id);
 
   if (!alumno) throw new AppError('Alumno no encontrado', 404);
@@ -15,8 +13,7 @@ export const getById = (id) => {
   return alumno;
 };
 
-// create - Agrega un nuevo alumno a la base de datos
-export const create = ({ nombre, apellido, grado, seccion }) => {
+export const create = async ({ nombre, apellido, grado, seccion }) => {
   if (!nombre || !apellido || !grado || !seccion) {
     throw new AppError(
       'Todos los campos son requeridos: nombre, apellido, grado y seccion',
@@ -36,7 +33,7 @@ export const create = ({ nombre, apellido, grado, seccion }) => {
   return AlumnoRepository.save({ nombre, apellido, grado, seccion });
 };
 
-export const update = (id, campos) => {
+export const update = async (id, campos) => {
   const existe = AlumnoRepository.findById(id);
 
   if (!existe) {
@@ -53,7 +50,7 @@ export const update = (id, campos) => {
     camposPermitidos.includes(campo),
   );
 
-    if (camposEnviados.length === 0) {
+  if (camposEnviados.length === 0) {
     throw new AppError(
       'Debes enviar al menos un campo valido: nombre, apellido, grado o seccion',
       400,
@@ -63,7 +60,7 @@ export const update = (id, campos) => {
   return AlumnoRepository.updateById(id, campos);
 };
 
-export const remove = (id) => {
+export const remove = async (id) => {
   const existe = AlumnoRepository.findById(id);
 
   if (!existe) {

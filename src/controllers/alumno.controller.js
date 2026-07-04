@@ -1,33 +1,27 @@
 import * as AlumnoService from '../services/alumno.service.js';
 
-// getAll - Devuelve todos los alumnos, con opción de filtrar por grado
-export const getAll = (req, res) => {
+export const getAll = async (req, res, next) => {
   try {
     const { grado } = req.query;
-
-    const alumnos = AlumnoService.getAll({ grado });
-
+    const alumnos = await AlumnoService.getAll({ grado });
     res.json(alumnos);
   } catch (error) {
-    res.status(error.statusCode ?? 500).json({ error: error.message });
+    next(error);
   }
 };
 
-// getById - Devuelve un alumno por su ID
-export const getById = (req, res) => {
+export const getById = async (req, res, next) => {
   try {
-    const alumno = AlumnoService.getById(Number(req.params.id));
-
+    const alumno = await AlumnoService.getById(Number(req.params.id));
     res.json(alumno);
   } catch (error) {
-    res.status(error.statusCode ?? 500).json({ error: error.message });
+    next(error);
   }
 };
 
-// create - Agrega un nuevo alumno a la base de datos
-export const create = (req, res) => {
+export const create = async (req, res, next) => {
   try {
-    const nuevoAlumno = AlumnoService.create({
+    const nuevoAlumno = await AlumnoService.create({
       nombre: req.body?.nombre,
       apellido: req.body?.apellido,
       grado: req.body?.grado,
@@ -36,31 +30,28 @@ export const create = (req, res) => {
 
     res.status(201).json(nuevoAlumno);
   } catch (error) {
-    res.status(error.statusCode ?? 500).json({ error: error.message });
+    next(error);
   }
 };
 
-// update - Actualiza un alumno existente
-export const update = (req, res) => {
+export const update = async (req, res, next) => {
   try {
-    const alumnoActualizado = AlumnoService.update(
+    const alumnoActualizado = await AlumnoService.update(
       Number(req.params.id),
       req.body,
     );
 
     res.json(alumnoActualizado);
   } catch (error) {
-    res.status(error.statusCode ?? 500).json({ error: error.message });
+    next(error);
   }
 };
 
-// remove - Elimina un alumno por su ID
-export const remove = (req, res) => {
+export const remove = async (req, res, next) => {
   try {
-    AlumnoService.remove(Number(req.params.id));
-
+    await AlumnoService.remove(Number(req.params.id));
     res.status(204).send();
   } catch (error) {
-    res.status(error.statusCode ?? 500).json({ error: error.message });
+    next(error);
   }
 };

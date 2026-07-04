@@ -1,10 +1,10 @@
 {
   "name": "colegio_san_marcos",
   "version": "1.0.0",
-  "description": "",
+  "description": "API REST para gestionar alumnos con autenticación básica",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test",
     "dev": "node --watch index.js"
   },
   "keywords": [],
@@ -12,7 +12,9 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3"
   }
 }
