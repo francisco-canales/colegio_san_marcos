@@ -1,38 +1,23 @@
-const usuarios = [];
-let idActual = 1;
+import { prisma } from '../config/prisma.js';
 
-export const findAll = async () => {
-  return usuarios.map(({ id, nombre, email, rol }) => ({ id, nombre, email, rol }));
+export const findAll = () => {
+  return prisma.usuario.findMany({
+    select: { id: true, nombre: true, email: true, rol: true },
+  });
 };
 
-export const findByEmail = async (email) => {
-  return usuarios.find((usuario) => usuario.email === email.toLowerCase()) ?? null;
+export const findByEmail = (email) => {
+  return prisma.usuario.findUnique({ where: { email: String(email).toLowerCase() } });
 };
 
-export const findById = async (id) => {
-  return usuarios.find((usuario) => usuario.id === Number(id)) ?? null;
+export const findById = (id) => {
+  return prisma.usuario.findUnique({ where: { id: Number(id) } });
 };
 
-export const save = async ({ nombre, email, passwordHash, rol = 'COORDINADOR' }) => {
-  const nuevoUsuario = {
-    id: idActual++,
-    nombre,
-    email: email.toLowerCase(),
-    passwordHash,
-    rol,
-  };
-
-  usuarios.push(nuevoUsuario);
-  return nuevoUsuario;
+export const save = ({ nombre, email, passwordHash }) => {
+  return prisma.usuario.create({ data: { nombre, email: String(email).toLowerCase(), passwordHash } });
 };
 
-export const updatePasswordHash = async (id, passwordHash) => {
-  const usuario = await findById(id);
-
-  if (!usuario) {
-    return null;
-  }
-
-  usuario.passwordHash = passwordHash;
-  return usuario;
+export const updatePasswordHash = (id, passwordHash) => {
+  return prisma.usuario.update({ where: { id: Number(id) }, data: { passwordHash } });
 };
