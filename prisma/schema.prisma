@@ -16,12 +16,18 @@ model Alumno {
   @@map("alumnos")
 }
 
+enum Rol {
+  ADMIN
+  COORDINADOR
+}
+
 model Usuario {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String
-  rol       String  @default("usuario")
-  activo    Boolean @default(true)
+  id           Int    @id @default(autoincrement())
+  nombre       String
+  email        String @unique
+  passwordHash String
+  rol          Rol    @default(COORDINADOR)
+  activo       Boolean @default(true)
 
   @@map("usuarios")
 }
