@@ -1,61 +1,38 @@
-let alumnos = [
-  { id: 1, nombre: 'María', apellido: 'González', grado: '5to', seccion: 'A' },
-  { id: 2, nombre: 'Carlos', apellido: 'Ramos', grado: '5to', seccion: 'B' },
-  { id: 3, nombre: 'Andrea', apellido: 'López', grado: '6to', seccion: 'A' },
-];
-
-let idActual = 4;
+import { prisma } from '../config/prisma.js';
 
 export const findAll = ({ grado } = {}) => {
-  if (grado) return alumnos.filter((a) => a.grado === grado);
-
-  return alumnos;
+  return prisma.alumno.findMany({
+    where: grado ? { grado } : undefined,
+  });
 };
 
 export const findById = (id) => {
-  return alumnos.find((a) => a.id === Number(id)) ?? null;
+  return prisma.alumno.findUnique({
+    where: { id },
+  });
 };
 
 export const findByNombreCompleto = (nombre, apellido) => {
-  return (
-    alumnos.find((a) => a.nombre === nombre && a.apellido === apellido) ?? null
-  );
+  return prisma.alumno.findFirst({
+    where: { nombre, apellido },
+  });
 };
 
 export const save = ({ nombre, apellido, grado, seccion }) => {
-  const nuevoAlumno = {
-    id: idActual++,
-    nombre,
-    apellido,
-    grado,
-    seccion,
-  };
-
-  alumnos.push(nuevoAlumno);
-
-  return nuevoAlumno;
+  return prisma.alumno.create({
+    data: { nombre, apellido, grado, seccion },
+  });
 };
 
-export const updateById = (id, campos) => {
-  const alumno = alumnos.find((a) => a.id === Number(id));
-
-  if (!alumno) return null;
-
-  const permitidos = ['nombre', 'apellido', 'grado', 'seccion'];
-
-  permitidos.forEach((campo) => {
-    if (campos[campo] !== undefined) alumno[campo] = campos[campo];
+export const updateById = (id, data) => {
+  return prisma.alumno.update({
+    where: { id },
+    data,
   });
-
-  return alumno;
 };
 
 export const deleteById = (id) => {
-  const alumnoIndex = alumnos.findIndex((a) => a.id === Number(id));
-
-  if (alumnoIndex === -1) return false;
-
-  alumnos.splice(alumnoIndex, 1);
-
-  return true;
+  return prisma.alumno.delete({
+    where: { id },
+  });
 };

@@ -21,13 +21,13 @@ export const getById = async (req, res, next) => {
 
 export const create = async (req, res, next) => {
   try {
+    const { nombre, apellido, grado, seccion } = req.body;
     const nuevoAlumno = await AlumnoService.create({
-      nombre: req.body?.nombre,
-      apellido: req.body?.apellido,
-      grado: req.body?.grado,
-      seccion: req.body?.seccion,
+      nombre,
+      apellido,
+      grado,
+      seccion,
     });
-
     res.status(201).json(nuevoAlumno);
   } catch (error) {
     next(error);
@@ -40,7 +40,6 @@ export const update = async (req, res, next) => {
       Number(req.params.id),
       req.body,
     );
-
     res.json(alumnoActualizado);
   } catch (error) {
     next(error);

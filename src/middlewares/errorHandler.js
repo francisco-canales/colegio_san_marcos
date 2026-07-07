@@ -1,10 +1,24 @@
 import { AppError } from '../errors/appError.js';
+import { Prisma } from '@prisma/client';
 
-export const errorHandler = (error, req, res, next) => {
-  if (error instanceof AppError) {
-    return res.status(error.statusCode).json({ error: error.message });
+export const errorHandler = (err, req, res, next) => {
+  console.error(`[ERROR] ${req.method} ${req.url} →`, err.message);
+
+  // Errores de negocio (AppError)
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({ error: err.message });
   }
 
-  console.error(error);
-  return res.status(500).json({ error: 'Error interno del servidor' });
+  // Errores de Prisma
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    if (err.code === 'P2002') {
+      return res.status(409).json({ error: 'El valor ya existe y debe ser único' });
+    }
+    if (err.code === 'P2025') {
+      return res.status(404).json({ error: 'Registro no encontrado' });
+    }
+  }
+
+  // Error genérico (no exponer detalles internos)
+  res.status(500).json({ error: 'Error interno del servidor' });
 };
