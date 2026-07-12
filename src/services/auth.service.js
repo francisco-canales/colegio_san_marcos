@@ -67,7 +67,15 @@ export const iniciarSesion = async ({ email, password }) => {
   };
 };
 
-export const cambiarPassword = async (id, { passwordActual, passwordNueva }) => {
+export const cambiarPassword = async (
+  id,
+  { passwordActual, passwordNueva },
+  usuarioAutenticadoId = null,
+) => {
+  if (usuarioAutenticadoId !== null && Number(usuarioAutenticadoId) !== Number(id)) {
+    throw new AppError('No tienes permiso para realizar esta acción', 403);
+  }
+
   if (!passwordActual || !passwordNueva) {
     throw new AppError(
       'Se requieren la contraseña actual y la nueva contraseña',

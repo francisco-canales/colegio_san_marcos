@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /api/auth/registrar:
+ * /api/auth/registro:
  *   post:
  *     summary: Registra una nueva cuenta de usuario
  *     tags: [Usuarios]

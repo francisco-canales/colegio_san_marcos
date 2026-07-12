@@ -29,10 +29,14 @@ export const login = async (req, res, next) => {
 
 export const cambiarPassword = async (req, res, next) => {
   try {
-    await AuthService.cambiarPassword(Number(req.params.id), {
-      passwordActual: req.body?.passwordActual,
-      passwordNueva: req.body?.passwordNueva,
-    });
+    await AuthService.cambiarPassword(
+      Number(req.params.id),
+      {
+        passwordActual: req.body?.passwordActual,
+        passwordNueva: req.body?.passwordNueva,
+      },
+      req.usuario?.id,
+    );
 
     res.status(204).send();
   } catch (error) {
